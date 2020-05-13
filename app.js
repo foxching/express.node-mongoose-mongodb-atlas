@@ -1,11 +1,14 @@
 const express = require('express');
-const postRouter = require('./routes/posts');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
+
+const postRouter = require('./routes/posts');
 
 //Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use('/posts', postRouter);
 
