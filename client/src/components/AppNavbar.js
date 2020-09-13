@@ -7,24 +7,19 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText
+    NavLink
 } from 'reactstrap';
 
-const AppNavbar = (props) => {
+const AppNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
 
     return (
         <div>
-            <Navbar color="dark" dark expand="sm" className="mb-5">
+            <Navbar color="dark" dark expand="sm" >
                 <Container>
-                    <NavbarBrand href="/">My Todo</NavbarBrand>
+                    <NavbarBrand href="/">Todo</NavbarBrand>
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className="ml-auto" navbar>
