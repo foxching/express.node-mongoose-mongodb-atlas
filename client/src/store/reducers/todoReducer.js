@@ -1,4 +1,4 @@
-import { GET_TODOS } from '../actions/types'
+import { GET_TODOS, DELETE_TODO, ADD_TODO } from '../actions/types'
 import { v4 as uuid } from 'uuid';
 
 const initialState = {
@@ -10,11 +10,21 @@ const initialState = {
 }
 
 
-const TodosReducer = (state = initialState, { type, payload }) => {
-  switch (type) {
+const TodosReducer = (state = initialState, action) => {
+  switch (action.type) {
     case GET_TODOS:
       return {
         ...state
+      }
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.payload)
+      }
+    case ADD_TODO:
+      return {
+        ...state,
+        todos: [action.payload, ...state.todos]
       }
     default:
       return state
