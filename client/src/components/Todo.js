@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Label, Input } from 'reactstrap';
@@ -8,7 +7,7 @@ import {
     Card, CardBody,
     CardTitle, Button
 } from 'reactstrap';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { ListGroup} from 'reactstrap';
 import { getTodos, deleteTodo, addTodo } from './../store/actions/todoAction'
 
 
@@ -31,13 +30,12 @@ const Todo = () => {
     //add new todo
     const handleAddTodo = () => {
         const newTodo = {
-            id:uuid(),
-            title:todo
+            title: todo
         }
         addNewTodo(newTodo)
         setTodo("")
     }
-    
+
     const handleDeleteTodo = (id) => {
         removeTodo(id)
     }
@@ -58,14 +56,14 @@ const Todo = () => {
                                 <CardBody>
                                     <CardTitle>Awesome Todo list</CardTitle>
                                     <div className="add-items d-flex">
-                                        <Input 
-                                            type="text" 
-                                            value={todo} 
-                                            onChange={(e) => setTodo(e.target.value)} 
-                                            className="form-control todo-list-input" 
-                                            placeholder="What do you need to do today?" 
-                                        /> 
-                                        <Button 
+                                        <Input
+                                            type="text"
+                                            value={todo}
+                                            onChange={(e) => setTodo(e.target.value)}
+                                            className="form-control todo-list-input"
+                                            placeholder="What do you need to do today?"
+                                        />
+                                        <Button
                                             color="primary"
                                             onClick={handleAddTodo}
                                         >
@@ -75,12 +73,12 @@ const Todo = () => {
                                     <div className="list-wrapper">
                                         <ListGroup>
                                             <TransitionGroup className="todo-list">
-                                                {todos && todos.map(todo => (
-                                                    <CSSTransition key={todo.id} timeout={500} classNames="fade">
-                                                        <li>
-                                                            <div className="form-check"> <label className="form-check-label"> <input className="checkbox" type="checkbox" /> {todo.title} <i className="input-helper"></i></label> </div> <i onClick={() => handleDeleteTodo(todo.id)} className="remove mdi mdi-close-circle-outline"></i>
-                                                        </li>
-                                                    </CSSTransition>
+                                                {todos && todos.map(({ title, _id }) => (
+                                                    <CSSTransition key={_id} timeout={500} classNames="fade">
+                                                    <li>
+                                                        <div className="form-check"> <label className="form-check-label"> <input className="checkbox" type="checkbox" /> {title} <i className="input-helper"></i></label> </div> <i onClick={() => handleDeleteTodo(_id)} className="remove mdi mdi-close-circle-outline"></i>
+                                                    </li>
+                                                </CSSTransition>
                                                 ))}
                                             </TransitionGroup>
                                         </ListGroup>

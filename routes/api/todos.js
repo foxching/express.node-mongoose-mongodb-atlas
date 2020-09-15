@@ -11,7 +11,7 @@ const Todo = require('../../model/Todo');
 
 router.get('/', async (req, res) => {
 	try {
-		const todos = await Todo.find({});
+		const todos = await Todo.find({}).sort({date:"-1"});
 		res.status(200).json(todos);
 	} catch (err) {
 		res.status(500).json({ err: err });
@@ -30,8 +30,8 @@ router.post('/', async (req, res) => {
 		title: req.body.title
 	});
 	try {
-		await todo.save();
-		res.status(201).json({ msg: "Todo added successfully" });
+		const newTodo = await todo.save();
+		res.status(201).json(newTodo);
 	} catch (err) {
 		res.status(500).json({ err: err });
 	}

@@ -1,12 +1,9 @@
-import { GET_TODOS, DELETE_TODO, ADD_TODO } from '../actions/types'
-import { v4 as uuid } from 'uuid';
+import { GET_TODOS, DELETE_TODO, ADD_TODO, SET_LOADING } from '../actions/types'
+
 
 const initialState = {
-  todos: [
-    { id: uuid(), title: "Eat breakfast" },
-    { id: uuid(), title: "Brush teeth" },
-    { id: uuid(), title: "Code websites" }
-  ]
+  todos: [],
+  loading: false
 }
 
 
@@ -14,17 +11,24 @@ const TodosReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_TODOS:
       return {
-        ...state
+        ...state,
+        todos: action.payload,
+        loading: false
       }
     case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.filter(todo => todo.id !== action.payload)
+        todos: state.todos.filter(({ _id }) => _id !== action.payload)
       }
     case ADD_TODO:
       return {
         ...state,
         todos: [action.payload, ...state.todos]
+      }
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true
       }
     default:
       return state
