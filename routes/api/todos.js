@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const Todo = require('../../model/Todo');
+const ObjectId = require('mongodb').ObjectID
 
 
 /**
@@ -11,7 +12,7 @@ const Todo = require('../../model/Todo');
 
 router.get('/', async (req, res) => {
 	try {
-		const todos = await Todo.find({}).sort({date:"-1"});
+		const todos = await Todo.find({}).sort({ date: "-1" });
 		res.status(200).json(todos);
 	} catch (err) {
 		res.status(500).json({ err: err });
@@ -60,11 +61,31 @@ router.delete('/:id', async (req, res) => {
 });
 
 /**
+ * @route   POST api/todos
+ * @desc    TOGGLE todo completed
+ * @access  Public
+ */
+router.post('/:id', async (req, res) => {
+	const todoId = req.params.id;
+	try {
+		const value = await Todo.findOne({ _id: ObjectId(todoId) })
+		if (value) {
+			await Todo.updateOne({ _id: ObjectId(todoId) }, { $set: { completed: !value.completed } })
+			res.status(200).json({ msg: "Todo updated successfully" });
+		} else {
+			res.status(404).json({ msg: "Todo not found" });
+		}
+	} catch (err) {
+		res.status(500).json({ err: err.msg });
+	}
+});
+
+
+/**
  * @route   PATCH api/todos
  * @desc    UPDATE a todo
  * @access  Public
  */
-
 router.patch('/:id', async (req, res) => {
 	const id = req.params.id;
 	try {

@@ -7,8 +7,8 @@ import {
     Card, CardBody,
     CardTitle, Button
 } from 'reactstrap';
-import { ListGroup} from 'reactstrap';
-import { getTodos, deleteTodo, addTodo } from './../store/actions/todoAction'
+import { ListGroup } from 'reactstrap';
+import { getTodos, deleteTodo, addTodo, toggleTodoCompleted } from './../store/actions/todoAction'
 
 
 
@@ -24,6 +24,7 @@ const Todo = () => {
     const getAllTodos = () => dispatch(getTodos());
     const removeTodo = (id) => dispatch(deleteTodo(id));
     const addNewTodo = (value) => dispatch(addTodo(value))
+    const toggleTodo = (id) => dispatch(toggleTodoCompleted(id))
 
 
 
@@ -39,6 +40,12 @@ const Todo = () => {
     const handleDeleteTodo = (id) => {
         removeTodo(id)
     }
+
+    const handleToggleTodo = (id) => {
+        toggleTodo(id)
+    }
+
+
 
     //load todos on component mount
     useEffect(() => {
@@ -66,6 +73,7 @@ const Todo = () => {
                                         <Button
                                             color="primary"
                                             onClick={handleAddTodo}
+                                            disabled={todo.trim() === "" ? true : false}
                                         >
                                             Add
                                         </Button>
@@ -73,12 +81,12 @@ const Todo = () => {
                                     <div className="list-wrapper">
                                         <ListGroup>
                                             <TransitionGroup className="todo-list">
-                                                {todos && todos.map(({ title, _id }) => (
+                                                {todos && todos.map(({ title, _id, completed }) => (
                                                     <CSSTransition key={_id} timeout={500} classNames="fade">
-                                                    <li>
-                                                        <div className="form-check"> <label className="form-check-label"> <input className="checkbox" type="checkbox" /> {title} <i className="input-helper"></i></label> </div> <i onClick={() => handleDeleteTodo(_id)} className="remove mdi mdi-close-circle-outline"></i>
-                                                    </li>
-                                                </CSSTransition>
+                                                        <li className={completed ? "completed" : ""}>
+                                                            <div className="form-check"> <label className="form-check-label"> <input onChange={() => handleToggleTodo(_id)} className="checkbox" type="checkbox" checked={!!completed} /> {title} <i className="input-helper"></i></label> </div> <i onClick={() => handleDeleteTodo(_id)} className="remove mdi mdi-close-circle-outline"></i>
+                                                        </li>
+                                                    </CSSTransition>
                                                 ))}
                                             </TransitionGroup>
                                         </ListGroup>

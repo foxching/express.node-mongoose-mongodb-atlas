@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_TODOS, DELETE_TODO, ADD_TODO, SET_LOADING } from './types';
+import { GET_TODOS, DELETE_TODO, ADD_TODO, TOGGLE_TODO, SET_LOADING } from './types';
 
 export const getTodos = () => dispatch => {
     dispatch(setLoading())
@@ -31,6 +31,17 @@ export const addTodo = (todo) => dispatch => {
             dispatch({
                 type: ADD_TODO,
                 payload: res.data
+            })
+        )
+        .catch(err => console.log(err))
+}
+
+export const toggleTodoCompleted = (id) => dispatch => {
+    axios.post(`/api/todos/${id}`)
+        .then(res =>
+            dispatch({
+                type: TOGGLE_TODO,
+                payload: id
             })
         )
         .catch(err => console.log(err))
