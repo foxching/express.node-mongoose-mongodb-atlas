@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Label, Input } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Input } from 'reactstrap';
 import {
     Card, CardBody,
     CardTitle, Button
