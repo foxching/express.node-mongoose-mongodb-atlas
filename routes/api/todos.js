@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const Todo = require('../../model/Todo');
 const ObjectId = require('mongodb').ObjectID
+const auth = require('../../middleware/auth')
 
 
 /**
@@ -23,10 +24,10 @@ router.get('/', async (req, res) => {
 /**
  * @route   POST api/todos
  * @desc    Create a Todo
- * @access  Public
+ * @access  Private
  */
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
 	const todo = new Todo({
 		title: req.body.title
 	});
@@ -42,10 +43,10 @@ router.post('/', async (req, res) => {
 /**
  * @route   DELETE api/todos
  * @desc    DELETE a todo
- * @access  Public
+ * @access  Private
  */
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
 	const todoId = req.params.id;
 	try {
 		const id = await Todo.findById(todoId)
@@ -63,9 +64,9 @@ router.delete('/:id', async (req, res) => {
 /**
  * @route   POST api/todos
  * @desc    TOGGLE todo completed
- * @access  Public
+ * @access  Private
  */
-router.post('/:id', async (req, res) => {
+router.post('/:id', auth, async (req, res) => {
 	const todoId = req.params.id;
 	try {
 		const value = await Todo.findOne({ _id: ObjectId(todoId) })
@@ -84,9 +85,9 @@ router.post('/:id', async (req, res) => {
 /**
  * @route   PATCH api/todos
  * @desc    UPDATE a todo
- * @access  Public
+ * @access  Private
  */
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
 	const id = req.params.id;
 	try {
 		await Todo.updateOne({ _id: id }, { $set: { title: req.body.title } });

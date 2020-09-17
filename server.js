@@ -10,8 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //api
-const todos = require('./routes/api/todos');
-app.use('/api/todos', todos);
+app.use('/api/todos', require('./routes/api/todos'));
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/auth', require('./routes/api/auth'));
+
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
@@ -25,8 +27,9 @@ if (process.env.NODE_ENV === 'production') {
 
 
 //mongodb
-const db = require('./config/keys').MONGO_URI
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+const config = require('config')
+const db = config.get('mongoURI')
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
 	.then(() => console.log('Database connected'))
 	.catch(error => console.log(error))
 
