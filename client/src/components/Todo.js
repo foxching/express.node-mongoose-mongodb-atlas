@@ -14,17 +14,9 @@ import { getTodos, deleteTodo, addTodo, toggleTodoCompleted } from './../store/a
 const Todo = () => {
     const [todo, setTodo] = useState("")
 
-    //state
+    //redux state & actions
     const todos = useSelector(state => state.todos.todos);
-
-
-    //actions
     const dispatch = useDispatch();
-    const getAllTodos = () => dispatch(getTodos());
-    const removeTodo = (id) => dispatch(deleteTodo(id));
-    const addNewTodo = (value) => dispatch(addTodo(value))
-    const toggleTodo = (id) => dispatch(toggleTodoCompleted(id))
-
 
 
     //add new todo
@@ -32,24 +24,25 @@ const Todo = () => {
         const newTodo = {
             title: todo
         }
-        addNewTodo(newTodo)
+        dispatch(addTodo(newTodo))
         setTodo("")
     }
 
+    //remove todo
     const handleDeleteTodo = (id) => {
-        removeTodo(id)
+        dispatch(deleteTodo(id))
     }
 
+    //toggle completed todo
     const handleToggleTodo = (id) => {
-        toggleTodo(id)
+        dispatch(toggleTodoCompleted(id))
     }
 
 
-
-    //load todos on component mount
+    //load all todos on component mount
     useEffect(() => {
-        getAllTodos()
-    }, [])
+        dispatch(getTodos())
+    }, [dispatch])
 
 
     return (
@@ -80,7 +73,7 @@ const Todo = () => {
                                     <div className="list-wrapper">
                                         <ListGroup>
                                             <TransitionGroup className="todo-list">
-                                                {todos && todos.map(({ title, _id, completed }) => (
+                                                {todos && todos.map(({ _id, title, completed }) => (
                                                     <CSSTransition key={_id} timeout={500} classNames="fade">
                                                         <li className={completed ? "completed" : ""}>
                                                             <div className="form-check"> <label className="form-check-label"> <input onChange={() => handleToggleTodo(_id)} className="checkbox" type="checkbox" checked={!!completed} /> {title} <i className="input-helper"></i></label> </div> <i onClick={() => handleDeleteTodo(_id)} className="remove mdi mdi-close-circle-outline"></i>

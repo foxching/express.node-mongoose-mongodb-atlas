@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Container } from 'reactstrap';
 import {
+    Container,
     Collapse,
     Navbar,
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem,
-    NavLink
+    NavItem
 } from 'reactstrap';
+
+import RegisterModal from './auth/RegisterModal'
+import Logout from './auth/Logout'
 
 const AppNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,12 +26,14 @@ const AppNavbar = () => {
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="https://github.com/foxching">Github</NavLink>
+                                <RegisterModal />
+                            </NavItem>
+                            <NavItem>
+                                <Logout />
                             </NavItem>
                         </Nav>
                     </Collapse>
                 </Container>
-
             </Navbar>
         </div>
     );
