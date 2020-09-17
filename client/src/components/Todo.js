@@ -7,7 +7,7 @@ import {
     CardTitle, Button
 } from 'reactstrap';
 import { ListGroup } from 'reactstrap';
-import { getTodos, deleteTodo, addTodo, toggleTodoCompleted } from './../store/actions/todoAction'
+import { getTodos, deleteTodo, addTodo, toggleTodoCompleted } from './../store/actions/todoActions'
 
 
 
