@@ -9,6 +9,11 @@ const TodoSchema = mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	author: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: 'User'
+	},
 	date: {
 		type: Date,
 		default: Date.now

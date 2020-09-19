@@ -1,8 +1,9 @@
 export const GET_TODOS = "GET_TODOS";
 export const ADD_TODO = "ADD_TODO";
 export const DELETE_TODO = "DELETE_TODO";
-export const SET_LOADING = "SET_LOADING";
 export const TOGGLE_TODO = "TOGGLE_TODO";
+export const TODO_LOADING = "TODO_LOADING";
+export const CLEAR_TODOS = "CLEAR_TODOS"
 
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";

@@ -11,12 +11,12 @@ const auth = require('../../middleware/auth')
  * @access  Public
  */
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 	try {
-		const todos = await Todo.find({}).sort({ date: "-1" });
+		const todos = await Todo.find({ author: req.user.id }).sort({ date: "-1" });
 		res.status(200).json(todos);
 	} catch (err) {
-		res.status(500).json({ err: err });
+		res.status(500).json({ err: err.msg });
 	}
 });
 
@@ -29,13 +29,36 @@ router.get('/', async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
 	const todo = new Todo({
-		title: req.body.title
+		title: req.body.title,
+		author: req.user.id
 	});
 	try {
 		const newTodo = await todo.save();
 		res.status(201).json(newTodo);
 	} catch (err) {
-		res.status(500).json({ err: err });
+		res.status(500).json({ err: err.msg });
+	}
+});
+
+
+
+/**
+ * @route   PuT api/todos
+ * @desc    TOGGLE todo
+ * @access  Private
+ */
+router.put('/:id', auth, async (req, res) => {
+	const todoId = req.params.id;
+	try {
+		const value = await Todo.findById(todoId)
+		if (value) {
+			await Todo.updateOne({ _id: ObjectId(todoId) }, { $set: { completed: !value.completed } })
+			res.status(200).json({ msg: "Todo updated successfully" });
+		} else {
+			res.status(404).json({ msg: "Todo not found" });
+		}
+	} catch (err) {
+		res.status(500).json({ err: err.msg });
 	}
 });
 
@@ -61,25 +84,7 @@ router.delete('/:id', auth, async (req, res) => {
 	}
 });
 
-/**
- * @route   POST api/todos
- * @desc    TOGGLE todo completed
- * @access  Private
- */
-router.post('/:id', auth, async (req, res) => {
-	const todoId = req.params.id;
-	try {
-		const value = await Todo.findOne({ _id: ObjectId(todoId) })
-		if (value) {
-			await Todo.updateOne({ _id: ObjectId(todoId) }, { $set: { completed: !value.completed } })
-			res.status(200).json({ msg: "Todo updated successfully" });
-		} else {
-			res.status(404).json({ msg: "Todo not found" });
-		}
-	} catch (err) {
-		res.status(500).json({ err: err.msg });
-	}
-});
+
 
 
 /**

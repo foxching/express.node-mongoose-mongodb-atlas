@@ -1,4 +1,4 @@
-import { GET_TODOS, DELETE_TODO, ADD_TODO, TOGGLE_TODO, SET_LOADING } from '../actions/types'
+import { GET_TODOS, DELETE_TODO, ADD_TODO, TOGGLE_TODO, CLEAR_TODOS, TODO_LOADING } from '../actions/types'
 
 
 const initialState = {
@@ -9,6 +9,11 @@ const initialState = {
 
 const TodosReducer = (state = initialState, action) => {
   switch (action.type) {
+    case TODO_LOADING:
+      return {
+        ...state,
+        loading: true
+      }
     case GET_TODOS:
       return {
         ...state,
@@ -29,16 +34,16 @@ const TodosReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.map(todo => {
-         if(todo._id === action.payload){
-           todo.completed = !todo.completed
-         }
-         return todo
+          if (todo._id === action.payload) {
+            todo.completed = !todo.completed
+          }
+          return todo
         })
       }
-    case SET_LOADING:
+    case CLEAR_TODOS:
       return {
         ...state,
-        loading: true
+        todos: []
       }
     default:
       return state
